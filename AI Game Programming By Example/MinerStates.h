@@ -1,11 +1,12 @@
 #pragma once
-#include "State.h"
+#include "../Common/State.h"
+
 
 
 
 
 class EnterMineAndDigForNugget :
-	public State
+	public State<Miner>
 {
 public:
 	EnterMineAndDigForNugget();
@@ -27,7 +28,8 @@ public:
 
 
 
-class VisitBankAndDepositGold : public State
+
+class VisitBankAndDepositGold : public State<Miner>
 {
 public:
 	VisitBankAndDepositGold() {};
@@ -47,7 +49,7 @@ public:
 };
 
 
-class GoHomeAndSleepTilRested : public State
+class GoHomeAndSleepTilRested : public State<Miner>
 {
 public:
 	GoHomeAndSleepTilRested() {};
@@ -66,7 +68,7 @@ public:
 
 };
 
-class QuenchThirst : public State
+class QuenchThirst : public State<Miner>
 {
 public:
 	QuenchThirst() {};

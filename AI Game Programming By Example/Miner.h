@@ -6,8 +6,9 @@
 
 #include "Locations.h"
 #include "MinerStates.h"
+#include "../Common/StateMachine.h"
 
-class State;
+//class State;
 
 const int ComfortLevel = 5;
 
@@ -25,8 +26,10 @@ class Miner :
 
 private:
 
-	//pointer to thge current state
-	State* m_pCurrentState;
+	//Instance of the state machine class
+	StateMachine<Miner>* m_pStateMachine;
+	
+
 
 	//location of miner
 	location_type m_Location;
@@ -42,10 +45,10 @@ private:
 
 public:
 	Miner(int ID);
-
+	~Miner();
 	void Update();
 
-	void ChangeState(State* pNewState);
+	StateMachine<Miner>* GetFSM() const{ return m_pStateMachine; }
 
 
 	location_type Location()const { return m_Location; }

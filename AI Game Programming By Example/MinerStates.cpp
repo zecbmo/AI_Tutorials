@@ -44,13 +44,13 @@ void EnterMineAndDigForNugget::Execute(Miner* pMiner)
 	//if enough mined go put it in bank
 	if (pMiner->PocketsFull())
 	{
-		pMiner->ChangeState(VisitBankAndDepositGold::Instance());
+		pMiner->GetFSM()->ChangeState(VisitBankAndDepositGold::Instance());
 	}
 
 	//if thirsty go get a whiskey
 	if (pMiner->Thirsty())
 	{
-		pMiner->ChangeState(QuenchThirst::Instance());
+		pMiner->GetFSM()->ChangeState(QuenchThirst::Instance());
 	}
 
 
@@ -78,7 +78,7 @@ void VisitBankAndDepositGold::Enter(Miner * pMiner)
 	if (pMiner->Location() != bank)
 	{
 		
-		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Goin' to the bank. Yes siree";
+		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Goin' to the bank. Yes siree";
 
 		pMiner->ChangeLocation(bank);
 	}
@@ -86,10 +86,37 @@ void VisitBankAndDepositGold::Enter(Miner * pMiner)
 
 void VisitBankAndDepositGold::Execute(Miner *pMiner)
 {
+
+	//deposit the gold
+	pMiner->AddToWealth(pMiner->GoldCarried());
+
+	pMiner->SetGoldCarried(0);
+
+	//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+	std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": "
+		<< "Depositing gold. Total savings now: " << pMiner->Wealth();
+
+	//wealthy enough to have a well earned rest?
+	if (pMiner->Wealth() >= ComfortLevel)
+	{
+		
+		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": "
+			<< "WooHoo! Rich enough for now. Back home to mah li'lle lady";
+
+		pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
+	}
+
+	//otherwise get more gold
+	else
+	{
+		pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
+	}
+
 }
 
 void VisitBankAndDepositGold::Exit(Miner *pMiner)
 {
+	std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leavin' the bank";
 }
 
 
@@ -106,14 +133,40 @@ GoHomeAndSleepTilRested * GoHomeAndSleepTilRested::Instance()
 
 void GoHomeAndSleepTilRested::Enter(Miner *pMiner)
 {
+	if (pMiner->Location() != shack)
+	{
+		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Walkin' home";
+
+		pMiner->ChangeLocation(shack);
+	}
 }
 
 void GoHomeAndSleepTilRested::Execute(Miner *pMiner)
 {
+	//if miner is not fatigued start to dig for nuggets again.
+	if (!pMiner->Fatigued())
+	{
+		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": "
+			<< "What a God darn fantastic nap! Time to find more gold";
+
+		pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
+	}
+
+	else
+	{
+		//sleep
+		pMiner->DecreaseFatigue();
+
+		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "ZZZZ... ";
+	}
 }
 
 void GoHomeAndSleepTilRested::Exit(Miner *pMiner)
 {
+	Print(GetNameOfEntity(pMiner->ID()) += ": Leaving the house!");
 }
 
 
@@ -130,12 +183,35 @@ QuenchThirst * QuenchThirst::Instance()
 
 void QuenchThirst::Enter(Miner *pMiner)
 {
+	if (pMiner->Location() != saloon)
+	{
+		pMiner->ChangeLocation(saloon);
+
+		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Boy, ah sure is thusty! Walking to the saloon";
+	}
 }
 
 void QuenchThirst::Execute(Miner *pMiner)
 {
+	if (pMiner->Thirsty())
+	{
+		pMiner->BuyAndDrinkAWhiskey();
+
+		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That's mighty fine sippin liquer";
+
+		pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
+	}
+
+	else
+	{
+		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		std::cout << "\nERROR!\nERROR!\nERROR!";
+	}
 }
 
 void QuenchThirst::Exit(Miner *pMiner)
 {
+	std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
 }
