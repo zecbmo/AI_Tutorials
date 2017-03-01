@@ -113,18 +113,26 @@
   <ItemGroup>
     <ClInclude Include="BaseGameEntity.h" />
     <ClInclude Include="ConsoleUtils.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="EntityNames.h" />
+    <ClInclude Include="MessageDispatcher.h" />
+    <ClInclude Include="MessageTypes.h" />
     <ClInclude Include="Locations.h" />
     <ClInclude Include="MinerStates.h" />
     <ClInclude Include="Miner.h" />
     <ClInclude Include="MinersWife.h" />
+    <ClInclude Include="MinersWifeOwnedStates.h" />
+    <ClInclude Include="Telegram.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="MessageDispatcher.cpp" />
     <ClCompile Include="MinerStates.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="BaseGameEntity.cpp" />
     <ClCompile Include="Miner.cpp" />
     <ClCompile Include="MinersWife.cpp" />
+    <ClCompile Include="MinersWifeOwnedStates.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

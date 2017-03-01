@@ -7,16 +7,27 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{77bbcd4b-228e-4320-8342-42407cf666cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{cd2d1da5-7375-401a-a6d5-15cd0f8291fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\AI Game Programming By Example\State.h">
-      <Filter>FSM</Filter>
-    </ClInclude>
     <ClInclude Include="StateMachine.h">
       <Filter>FSM</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CrudeTimer.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CrudeTimer.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

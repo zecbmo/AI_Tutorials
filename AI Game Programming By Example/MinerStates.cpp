@@ -78,7 +78,7 @@ void VisitBankAndDepositGold::Enter(Miner * pMiner)
 	if (pMiner->Location() != bank)
 	{
 		
-		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Goin' to the bank. Yes siree";
+		Print(GetNameOfEntity(pMiner->ID()) += ": Goin' to the bank. Yes siree");
 
 		pMiner->ChangeLocation(bank);
 	}
@@ -93,15 +93,14 @@ void VisitBankAndDepositGold::Execute(Miner *pMiner)
 	pMiner->SetGoldCarried(0);
 
 	//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
-	std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": "
-		<< "Depositing gold. Total savings now: " << pMiner->Wealth();
+	std::cout <<  GetNameOfEntity(pMiner->ID()) << ": "
+		<< "Depositing gold. Total savings now: " << pMiner->Wealth() << std::endl;
 
 	//wealthy enough to have a well earned rest?
 	if (pMiner->Wealth() >= ComfortLevel)
 	{
 		
-		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": "
-			<< "WooHoo! Rich enough for now. Back home to mah li'lle lady";
+		Print(GetNameOfEntity(pMiner->ID()) += ": WooHoo! Rich enough for now. Back home to mah li'lle lady");
 
 		pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
 	}
@@ -116,7 +115,7 @@ void VisitBankAndDepositGold::Execute(Miner *pMiner)
 
 void VisitBankAndDepositGold::Exit(Miner *pMiner)
 {
-	std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leavin' the bank";
+	Print(GetNameOfEntity(pMiner->ID()) += ": Leavin' the bank");
 }
 
 
@@ -136,7 +135,7 @@ void GoHomeAndSleepTilRested::Enter(Miner *pMiner)
 	if (pMiner->Location() != shack)
 	{
 		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Walkin' home";
+		Print(GetNameOfEntity(pMiner->ID()) += ": Walkin' home");
 
 		pMiner->ChangeLocation(shack);
 	}
@@ -148,8 +147,7 @@ void GoHomeAndSleepTilRested::Execute(Miner *pMiner)
 	if (!pMiner->Fatigued())
 	{
 		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": "
-			<< "What a God darn fantastic nap! Time to find more gold";
+		Print(GetNameOfEntity(pMiner->ID()) += ": What a God darn fantastic nap! Time to find more gold");
 
 		pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
 	}
@@ -160,7 +158,7 @@ void GoHomeAndSleepTilRested::Execute(Miner *pMiner)
 		pMiner->DecreaseFatigue();
 
 		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "ZZZZ... ";
+		Print(GetNameOfEntity(pMiner->ID()) += ": ZZZZ... ");
 	}
 }
 
@@ -188,7 +186,7 @@ void QuenchThirst::Enter(Miner *pMiner)
 		pMiner->ChangeLocation(saloon);
 
 		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Boy, ah sure is thusty! Walking to the saloon";
+		Print(GetNameOfEntity(pMiner->ID()) += ": Boy, ah sure is thusty! Walking to the saloon");
 	}
 }
 
@@ -199,7 +197,7 @@ void QuenchThirst::Execute(Miner *pMiner)
 		pMiner->BuyAndDrinkAWhiskey();
 
 		//SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That's mighty fine sippin liquer";
+		Print(GetNameOfEntity(pMiner->ID()) += ": That's mighty fine sippin liquer");
 
 		pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
 	}
@@ -213,5 +211,5 @@ void QuenchThirst::Execute(Miner *pMiner)
 
 void QuenchThirst::Exit(Miner *pMiner)
 {
-	std::cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
+	Print(GetNameOfEntity(pMiner->ID()) += ": Leaving the saloon, feelin' good");
 }
